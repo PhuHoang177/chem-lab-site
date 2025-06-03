@@ -1,0 +1,54 @@
+# Node modules
+nextjs-chem-lab-site/node_modules/
+studio-chem-lab-site/node_modules/
+
+# Yarn, pnpm, npm
+nextjs-chem-lab-site/.pnp
+nextjs-chem-lab-site/.pnp.*
+studio-chem-lab-site/.pnp
+studio-chem-lab-site/.pnp.*
+nextjs-chem-lab-site/.yarn/*
+!nextjs-chem-lab-site/.yarn/patches
+!nextjs-chem-lab-site/.yarn/plugins
+!nextjs-chem-lab-site/.yarn/releases
+!nextjs-chem-lab-site/.yarn/versions
+
+# Build output
+nextjs-chem-lab-site/.next/
+nextjs-chem-lab-site/out/
+nextjs-chem-lab-site/build
+studio-chem-lab-site/.sanity/
+studio-chem-lab-site/dist/
+studio-chem-lab-site/build/
+
+# Coverage
+nextjs-chem-lab-site/coverage/
+studio-chem-lab-site/coverage/
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug logs
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/.pnpm-debug.log*
+
+# Env files
+**/.env*
+**/.env.local
+
+# Vercel
+nextjs-chem-lab-site/.vercel
+
+# TypeScript
+nextjs-chem-lab-site/*.tsbuildinfo
+nextjs-chem-lab-site/next-env.d.ts
+
+# Sanity
+studio-chem-lab-site/.sanity/
+
+# Optional: ignore IDE/editor folders
+.vscode/
+.idea/

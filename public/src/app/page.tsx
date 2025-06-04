@@ -12,6 +12,25 @@ type GalleryImage = {
   altText?: string;
 };
 
+type Post = {
+  _id: string;
+  title: string;
+  body: string; // Adjust type if you use Portable Text
+};
+
+type HomepageContent = {
+  contentType: "post" | "galleryImage";
+  post?: Post;
+  galleryImages?: GalleryImage[];
+};
+
+const HOMEPAGE_QUERY = `
+*[_type == "homepageContent"][0]{
+  contentType,
+  post->{_id, title, body},
+}
+`;
+
 const IMAGES_QUERY = `*[_type == "galleryImage"]|order(_createdAt desc)[0...12]{
   _id,
   title,
@@ -24,6 +43,21 @@ const IMAGES_QUERY = `*[_type == "galleryImage"]|order(_createdAt desc)[0...12]{
 const options = { next: { revalidate: 30 } };
 
 export default async function HomePage() {
+  const homepageContent: HomepageContent = await client.fetch(HOMEPAGE_QUERY, {}, options);
+
+  if (homepageContent?.contentType === "post" && homepageContent.post) {
+    return (
+      <section className="container mx-auto max-w-3xl px-4 py-16 min-h-screen bg-blue-50">
+        <h1 className="text-3xl font-bold mb-4">{homepageContent.post.title}</h1>
+        <div className="prose">
+          {/* Replace with PortableText if needed */}
+          {homepageContent.post.body}
+        </div>
+      </section>
+    );
+  }
+
+  // Default: show gallery images
   const images: GalleryImage[] = await client.fetch(IMAGES_QUERY, {}, options);
 
   return (

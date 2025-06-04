@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/app/components/NavBar";
+import Footer from "@/app/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,13 +29,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header className="py-16 text-center bg-white">
-          <h1 className="text-5xl font-extrabold tracking-tight mb-4 text-black">
-            JINCHAO CHEMISTRY LAB
+        <NavBar />
+        <header className="py-16 text-center bg-white mt-16">
+          <h1 className="text-7xl font-extrabold tracking-tight mb-4 text-black">
+            {"LOU'S LAB"}
           </h1>
-          <NavBar />
         </header>
-        {children}
+        <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );

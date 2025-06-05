@@ -18,7 +18,10 @@ export const cardType = defineType({
     defineField({
       name: 'icon',
       type: 'image',
-      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'image',
+      type: 'image',
     }),
     defineField({
       name: 'link',

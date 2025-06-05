@@ -27,6 +27,7 @@ export const imageType = defineType({
       options: {
         hotspot: true,
       },
+      validation: (rule) => rule.required(),
     }),
   ],
 })

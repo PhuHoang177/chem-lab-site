@@ -18,7 +18,6 @@ export const headerType = defineType({
       name: 'image',
       type: 'image',
       title: 'Background Image',
-      validation: (rule) => rule.required(),
     }),
   ],
 })

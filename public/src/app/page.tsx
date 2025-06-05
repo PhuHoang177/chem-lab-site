@@ -1,25 +1,7 @@
 import Image from "next/image";
 import { client } from "@/sanity/client";
-
-type imageType = {
-  _id: string;
-  title: string;
-  caption?: string;
-  image?: {
-    asset?: {
-      url: string;
-    };
-  };
-};
-
-const IMAGES_QUERY = `*[_type == "imageType"]|order(_createdAt desc)[0...2]{
-  _id,
-  title,
-  caption,
-  image{
-    asset->{url}
-  },
-}`;
+import { PortableText } from "@portabletext/react";
+import type { TypedObject } from "@portabletext/types";
 
 type cardType = {
   _id: string;
@@ -63,12 +45,32 @@ const HEADER_QUERY = `*[_type == "headerType"][0]{
   }
 }`;
 
+type postType = {
+  _id: string;
+  title: string;
+  body: TypedObject[];
+  image?: {
+    asset?: {
+      url: string;
+    };
+  };
+};
+
+const POST_QUERY = `*[_type == "postType"] | order(publishedAt desc) {
+  _id,
+  title,
+  body,
+  image{
+    asset->{url}
+  }
+}`;
+
 const options = { next: { revalidate: 30 } };
 
 export default async function HomePage() {
-  const images: imageType[] = await client.fetch(IMAGES_QUERY, {}, options);
   const cards: cardType[] = await client.fetch(CARDS_QUERY, {}, options);
   const header: headerType = await client.fetch(HEADER_QUERY, {}, options);
+  const posts: postType[] = await client.fetch(POST_QUERY, {}, options);
 
   return (
     <main className="w-full min-h-screen bg-white">
@@ -99,25 +101,33 @@ export default async function HomePage() {
 
       {/* Welcome Section */}
       <section className="max-w-8xl mx-auto px-4 py-12 text-center">
-        <h2 className="text-2xl font-semibold text-green-800 mb-4">
-          {"Welcome to LOU'S LAB at [Your Institution]"}
-        </h2>
-        <p className="text-lg text-gray-700 mb-6">
-          Explore our research, meet our team, and discover our latest
-          publications and news.
-        </p>
-        {/* Wel image */}
-        {images[1]?.image?.asset?.url && (
-          <div className="flex justify-center mt-8">
-            <Image
-              src={images[1].image.asset.url}
-              alt={images[1].caption || images[1].title}
-              width={1598}
-              height={954}
-              className="rounded-lg shadow-lg object-cover w-[80%] h-auto"
-            />
-          </div>
-        )}
+        <div className="space-y-12">
+          {posts.map((post) => (
+            <div key={post._id} className="mb-8 flex flex-col items-center">
+              <h1 className="text-2xl font-semibold text-green-800 mb-4">
+                {post.title}
+              </h1>
+              {(post.image?.asset?.url || post.body) && (
+                <div className="w-[85%]">
+                  {post.image?.asset?.url && (
+                    <div className="flex justify-center mt-4">
+                      <Image
+                        src={post.image.asset.url}
+                        alt={post.title}
+                        width={800}
+                        height={400}
+                        className="rounded-lg shadow-lg object-cover w-full h-auto"
+                      />
+                    </div>
+                  )}
+                  <div className="text-lg text-gray-700 mt-6 mb-4">
+                    <PortableText value={post.body} />
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* Info Cards Section */}

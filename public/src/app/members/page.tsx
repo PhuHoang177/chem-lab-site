@@ -69,7 +69,7 @@ export default async function HomePage() {
   return (
     <section className="container mx-auto max-w-7xl px-4 pb-16 min-h-screen bg-red-100">
       <h1 className="text-6xl font-extrabold text-center tracking-tight mb-4 text-black py-16 ">
-        {"LOU'S LAB"}
+        {"LAB'S MEMBERS"}
       </h1>
       <ul className="grid gap-8 md:grid-cols-3">
         {images.map((img: GalleryImage) => (

@@ -26,16 +26,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <NavBar />
-        <header className="py-16 text-center bg-white mt-16">
-          <h1 className="text-7xl font-extrabold tracking-tight mb-4 text-black">
-            {"LOU'S LAB"}
-          </h1>
-        </header>
-        <main>{children}</main>
+        <main className="mt-16">{children}</main>
         <Footer />
       </body>
     </html>

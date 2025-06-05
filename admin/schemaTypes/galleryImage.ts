@@ -1,4 +1,4 @@
-import { defineField, defineType } from 'sanity'
+import {defineField, defineType} from 'sanity'
 
 export const galleryImage = defineType({
   name: 'galleryImage',
@@ -8,21 +8,25 @@ export const galleryImage = defineType({
     defineField({
       name: 'title',
       type: 'string',
-      title: 'Title',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'caption',
+      type: 'string',
+      description: 'Image caption',
+    }),
+    defineField({
+      name: 'publishedAt',
+      type: 'datetime',
+      initialValue: () => new Date().toISOString(),
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'image',
       type: 'image',
-      title: 'Image',
       options: {
         hotspot: true,
       },
-    }),
-    defineField({
-      name: 'altText',
-      type: 'string',
-      title: 'Alt Text',
-      description: 'Alternative text for accessibility and SEO',
     }),
   ],
 })

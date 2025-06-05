@@ -1,8 +1,8 @@
 import {defineField, defineType} from 'sanity'
 
-export const postType = defineType({
-  name: 'postType',
-  title: 'Post',
+export const imageType = defineType({
+  name: 'imageType',
+  title: 'Image',
   type: 'document',
   fields: [
     defineField({
@@ -11,11 +11,10 @@ export const postType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'slug',
-      type: 'slug',
-      title: 'Generated Name',
-      options: {source: 'title'},
+      name: 'caption',
+      type: 'string',
       validation: (rule) => rule.required(),
+      description: 'Image caption',
     }),
     defineField({
       name: 'publishedAt',
@@ -26,11 +25,9 @@ export const postType = defineType({
     defineField({
       name: 'image',
       type: 'image',
-    }),
-    defineField({
-      name: 'body',
-      type: 'array',
-      of: [{type: 'block'}],
+      options: {
+        hotspot: true,
+      },
     }),
   ],
 })

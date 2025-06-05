@@ -36,6 +36,7 @@ export default function NavBar() {
 
   return (
     <AppBar
+      suppressHydrationWarning
       position="fixed"
       elevation={1}
       className="!top-0 !z-50" // Increase z-index here

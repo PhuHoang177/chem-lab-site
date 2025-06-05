@@ -120,7 +120,7 @@ export default async function HomePage() {
                       />
                     </div>
                   )}
-                  <div className="text-lg text-gray-700 mt-6 mb-4">
+                  <div className="prose mt-6 mb-3 mx-auto text-lg max-w-none">
                     <PortableText value={post.body} />
                   </div>
                 </div>

@@ -45,38 +45,54 @@ const CARDS_QUERY = `*[_type == "cardType"]|order(_createdAt asc){
   linkLabel
 }`;
 
+type headerType = {
+  title: string;
+  subtitle?: string;
+  image?: {
+    asset?: {
+      url: string;
+    };
+  };
+};
+
+const HEADER_QUERY = `*[_type == "headerType"][0]{
+  title,
+  subtitle,
+  image{
+    asset->{url}
+  }
+}`;
+
 const options = { next: { revalidate: 30 } };
 
 export default async function HomePage() {
   const images: imageType[] = await client.fetch(IMAGES_QUERY, {}, options);
   const cards: cardType[] = await client.fetch(CARDS_QUERY, {}, options);
-
-  console.log(cards); // Add this after fetching cards
+  const header: headerType = await client.fetch(HEADER_QUERY, {}, options);
 
   return (
     <main className="w-full min-h-screen bg-white">
       {/* Header Section */}
       <section className="relative w-full h-[420px] md:h-[520px] flex items-center justify-center">
-        {images[0]?.image?.asset?.url && (
+        {header?.image?.asset?.url && (
           <>
             <Image
-              src={images[0].image.asset.url}
-              alt={images[0].caption || images[0].title}
+              src={header.image.asset.url}
+              alt={header.title}
               fill
               style={{ objectFit: "cover" }}
               className="object-cover"
               priority
             />
-            {/* Overlay */}
             <div className="absolute inset-0 bg-black/60" />
           </>
         )}
         <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
           <h1 className="text-4xl md:text-6xl font-extrabold text-white text-center drop-shadow-lg">
-            {"LOU'S RESEARCH LAB"}
+            {header.title}
           </h1>
           <p className="mt-4 text-lg md:text-2xl text-white text-center font-medium drop-shadow">
-            Advancing Chemistry Through Innovation and Collaboration
+            {header.subtitle}
           </p>
         </div>
       </section>
@@ -98,7 +114,7 @@ export default async function HomePage() {
               alt={images[1].caption || images[1].title}
               width={1598}
               height={954}
-              className="rounded-lg shadow-lg object-cover w-[90%] h-auto"
+              className="rounded-lg shadow-lg object-cover w-[80%] h-auto"
             />
           </div>
         )}

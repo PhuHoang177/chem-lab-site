@@ -42,7 +42,7 @@ const IMAGES_QUERY = `*[_type == "galleryImage"]|order(_createdAt desc)[0...12]{
 
 const options = { next: { revalidate: 30 } };
 
-export default async function HomePage() {
+export default async function Members() {
   const homepageContent: HomepageContent = await client.fetch(
     HOMEPAGE_QUERY,
     {},

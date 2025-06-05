@@ -38,10 +38,11 @@ export default function NavBar() {
     <AppBar
       position="fixed"
       elevation={1}
-      className="!top-0 !z-10"
+      className="!top-0 !z-50" // Increase z-index here
       sx={{
         bgcolor: bgColor,
         transition: "background-color 0.3s",
+        zIndex: 1300, // MUI default for AppBar is 1100, but you can set higher if needed
       }}
     >
       <Toolbar className="flex justify-center space-x-4">

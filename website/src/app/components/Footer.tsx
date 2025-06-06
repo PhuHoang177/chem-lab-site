@@ -1,88 +1,145 @@
 import React from "react";
+import Image from "next/image";
+import { client } from "@/sanity/client";
+import { PortableText } from "@portabletext/react";
+import Button from "@mui/material/Button";
 
-export default function Footer() {
+type Social = {
+  label: string;
+  link: string;
+  icon?: { asset?: { url: string } };
+};
+
+type FooterType = {
+  title: string;
+  info?: any;
+  socials?: Social[];
+  universityDescription?: string;
+  universityLogo?: { asset?: { url: string } };
+  universityLogoLink?: string;
+};
+
+const FOOTER_QUERY = `*[_type == "footerType"][0]{
+  title,
+  info,
+  socials[]{
+    label,
+    link,
+    icon{
+      asset->{url}
+    }
+  },
+  universityDescription,
+  universityLogo{
+    asset->{url}
+  },
+  universityLogoLink,
+}`;
+
+export default async function Footer() {
+  const footer: FooterType = await client.fetch(FOOTER_QUERY);
+
   return (
     <footer className="w-full bg-[rgba(38,168,44,0.85)] text-white border-t border-green-700 py-4 mt-10">
-      <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-2">
-        {/* Left: Copyright and credits */}
-        <div className="text-xs text-left">
-          <div>
-            Copyright © {new Date().getFullYear()}{" "}
-            {"LOU'S LAB – All Rights Reserved."}
+      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 items-center gap-2">
+        {/* Left: Info */}
+        <div className="text-left w-full">
+          <div className="font-bold text-black text-lg mb-2">
+            {footer?.title}
           </div>
-          <div>Headshot image credits: Leon Hoang</div>
-          <a
-            href="mailto:your@email.com"
-            className="text-white underline hover:text-green-100"
-          >
-            your@email.com
-          </a>
+          {footer?.info && (
+            <div className="prose prose-invert text-xs text-white space-y-0 leading-none">
+              <PortableText value={footer.info} />
+            </div>
+          )}
         </div>
         {/* Center: Social icons */}
-        <div className="flex space-x-2">
-          {/* LinkedIn */}
-          <a
-            href="https://www.linkedin.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn"
-            className="bg-white rounded-full p-1 hover:bg-green-100 transition flex items-center justify-center"
-            style={{ width: 28, height: 28 }}
-          >
-            {/* Official LinkedIn SVG */}
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="12" fill="#0A66C2" />
-              <path
-                d="M17 17h-2.25v-3.25c0-.75-.25-1.25-1-1.25s-1 .5-1 1.25V17H10V10h2.25v1c.25-.5 1-1 2-1 1.5 0 2.25 1 2.25 2.5V17zM7.5 8.75a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zM8.75 17h-2.5V10h2.5v7z"
-                fill="white"
-              />
-            </svg>
-          </a>
-          {/* X (Twitter) */}
-          <a
-            href="https://x.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="X"
-            className="bg-white rounded-full p-1 hover:bg-green-100 transition flex items-center justify-center"
-            style={{ width: 28, height: 28 }}
-          >
-            {/* Official X SVG */}
-            <svg width="20" height="20" viewBox="0 0 1200 1227" fill="none">
-              <circle cx="600" cy="613.5" r="600" fill="black" />
-              <path
-                fill="white"
-                d="M911.6 320H1080L728.2 695.7 1140 1200H823.5L600 927.6 376.5 1200H60L471.8 695.7 120 320h168.4l311.6 357.5L911.6 320ZM852.5 1100h110.7L600 800.6 236.8 1100h110.7L600 927.6 852.5 1100Z"
-              />
-            </svg>
-          </a>
+        <div className="flex justify-center w-full">
+          <ul className="flex space-x-4">
+            {footer?.socials?.map((icon) =>
+              icon.icon?.asset?.url ? (
+                <li key={icon.label}>
+                  <Button
+                    component="a"
+                    href={icon.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={icon.label}
+                    sx={{
+                      p: 0,
+                      minWidth: 0,
+                      borderRadius: 1,
+                      background: "none",
+                      transition: "transform 0.3s",
+                      "&:hover": {
+                        background: "none",
+                        boxShadow: "none",
+                        transform: "scale(1.2)",
+                      },
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: 48,
+                      height: 48,
+                    }}
+                  >
+                    <Image
+                      src={icon.icon.asset.url}
+                      alt={icon.label}
+                      width={40}
+                      height={40}
+                      className="object-contain"
+                      style={{ borderRadius: 8 }}
+                    />
+                  </Button>
+                </li>
+              ) : null
+            )}
+          </ul>
         </div>
-        {/* Right: Powered by */}
-        <div className="flex flex-col items-center md:items-end">
-          <span className="text-xs text-white mb-0">Powered by</span>
-          <span className="flex items-center space-x-1">
-            {/* Sanity logo SVG */}
-            <svg
-              width="60"
-              height="18"
-              viewBox="0 0 80 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g>
-                <rect width="18" height="18" rx="4" fill="#F03E2F" />
-                <text
-                  x="22"
-                  y="14"
-                  fontFamily="Arial, sans-serif"
-                  fontSize="14"
-                  fill="white"
-                >
-                  Sanity
-                </text>
-              </g>
-            </svg>
-          </span>
+        {/* Right: University Logo */}
+        <div className="flex flex-col items-end justify-center w-full space-y-1 pr-4">
+          {footer.universityLogo?.asset?.url && (
+            <div>
+              <span className="text-xs text-white mb-px">
+                {footer?.universityDescription || "Associated with"}
+              </span>
+              <Button
+                component="a"
+                href={footer.universityLogoLink || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{
+                  p: 0,
+                  minWidth: 0,
+                  borderRadius: 1,
+                  background: "none",
+                  transition: "transform 0.3s",
+                  "&:hover": {
+                    background: "none",
+                    boxShadow: "none",
+                    transform: "scale(1.2)",
+                  },
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 48,
+                  height: 48,
+                  mr: 0, // Remove any right margin from the button
+                }}
+              >
+                <Image
+                  src={footer.universityLogo.asset.url}
+                  alt="University Logo"
+                  width={220}
+                  height={110}
+                  className="h-28 w-auto mt-0"
+                  style={{ maxWidth: 220 }}
+                  priority
+                />
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </footer>

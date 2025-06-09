@@ -41,7 +41,7 @@ export default async function Footer() {
 
   return (
     <footer className="w-full bg-[rgba(38,168,44,0.85)] text-white border-t border-green-700 py-4 mt-10">
-      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 items-center gap-2">
+      <div className="container w-full mx-auto px-4 grid grid-cols-1 md:grid-cols-3 items-center gap-2">
         {/* Left: Info */}
         <div className="text-left w-full">
           <div className="font-bold text-black text-lg mb-2">
@@ -114,11 +114,11 @@ export default async function Footer() {
                   minWidth: 0,
                   borderRadius: 1,
                   background: "none",
-                  transition: "transform 0.3s",
+                  transition: "transform 0.2s",
                   "&:hover": {
                     background: "none",
                     boxShadow: "none",
-                    transform: "scale(1.2)",
+                    transform: "scale(1.1)",
                   },
                   display: "flex",
                   alignItems: "center",
@@ -131,10 +131,10 @@ export default async function Footer() {
                 <Image
                   src={footer.universityLogo.asset.url}
                   alt="University Logo"
-                  width={220}
-                  height={110}
+                  width={150}
+                  height={75}
                   className="h-28 w-auto mt-0"
-                  style={{ maxWidth: 220 }}
+                  style={{ maxWidth: 180, height: "auto" }}
                   priority
                 />
               </Button>

@@ -108,17 +108,16 @@ export default async function HomePage() {
                 {post.title}
               </h1>
               {(post.image?.asset?.url || post.body) && (
-                <div className="w-[85%]">
+                <div className="w-full max-w-5xl mx-auto">
                   {post.image?.asset?.url && (
-                    <div className="flex justify-center mt-4">
-                      <Image
-                        src={post.image.asset.url}
-                        alt={post.title}
-                        width={800}
-                        height={400}
-                        className="rounded-lg shadow-lg object-cover w-full h-auto"
-                      />
-                    </div>
+                    <Image
+                      src={post.image.asset.url}
+                      alt={post.title}
+                      width={1024}
+                      height={800}
+                      sizes="(max-width: 1024px) 100vw, 800px"
+                      className="rounded-lg shadow-lg object-cover w-full h-auto mt-4"
+                    />
                   )}
                   <div className="prose mt-6 mb-3 mx-auto text-lg max-w-none">
                     <PortableText value={post.body} />

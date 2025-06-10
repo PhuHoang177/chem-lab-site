@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import {descriptionText} from './descriptionText'
 
 export const footerType = defineType({
   name: 'footerType',
@@ -6,7 +7,14 @@ export const footerType = defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'page',
+      type: 'string',
+      description: descriptionText.page,
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: 'title',
+      title: 'Lab Title',
       type: 'string',
       validation: (rule) => rule.required(),
     }),
@@ -17,14 +25,13 @@ export const footerType = defineType({
         {
           type: 'block',
           styles: [{title: 'Normal', value: 'normal'}],
-          // You can also restrict marks if you want
         },
       ],
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'socials',
-      title: 'Social Media Links',
+      name: 'socialsMedia',
+      title: 'Social Media',
       type: 'array',
       of: [
         {
@@ -36,19 +43,24 @@ export const footerType = defineType({
           ],
         },
       ],
+      validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'universityDescription',
-      type: 'string',
-    }),
-    defineField({
-      name: 'universityLogo',
+      name: 'partner',
       type: 'image',
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'universityLogoLink',
+      name: 'partnerLink',
       type: 'string',
+      description: descriptionText.link,
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'partnerRelationship',
+      type: 'string',
+      description: descriptionText.partnerRelationship,
+      validation: (rule) => rule.required(),
     }),
   ],
 })

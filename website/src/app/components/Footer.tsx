@@ -4,38 +4,6 @@ import { client } from "@/sanity/client";
 import { PortableText } from "@portabletext/react";
 import Button from "@mui/material/Button";
 
-type Social = {
-  label: string;
-  link: string;
-  icon?: { asset?: { url: string } };
-};
-
-type FooterType = {
-  title: string;
-  info?: any;
-  socials?: Social[];
-  universityDescription?: string;
-  universityLogo?: { asset?: { url: string } };
-  universityLogoLink?: string;
-};
-
-const FOOTER_QUERY = `*[_type == "footerType"][0]{
-  title,
-  info,
-  socials[]{
-    label,
-    link,
-    icon{
-      asset->{url}
-    }
-  },
-  universityDescription,
-  universityLogo{
-    asset->{url}
-  },
-  universityLogoLink,
-}`;
-
 export default async function Footer() {
   const footer: FooterType = await client.fetch(FOOTER_QUERY);
 

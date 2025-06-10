@@ -1,9 +1,9 @@
 import {defineField, defineType} from 'sanity'
 import {descriptionText} from './descriptionText'
 
-export const postType = defineType({
-  name: 'postType',
-  title: 'Post',
+export const goalType = defineType({
+  name: 'goalType',
+  title: 'Goal',
   type: 'document',
   fields: [
     defineField({
@@ -23,7 +23,7 @@ export const postType = defineType({
       title: 'ID',
       type: 'slug',
       options: {
-        source: (doc: any) => `${doc.page || ''}-post-${doc.order || ''}`,
+        source: (doc: any) => `${doc.page || ''}-goal-${doc.order || ''}`,
         slugify: (input: string) =>
           input
             .toLowerCase()
@@ -35,41 +35,29 @@ export const postType = defineType({
     }),
     defineField({
       name: 'title',
-      title: 'Post Title',
+      title: 'Goal Title',
       type: 'string',
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'content',
-      title: 'Post Content',
-      type: 'array',
-      of: [{type: 'block'}],
+      name: 'description',
+      type: 'text',
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'image',
-      title: 'Post Image',
+      name: 'icon',
       type: 'image',
+      validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'publishedAt',
-      type: 'datetime',
-      initialValue: () => new Date().toISOString(),
-      validation: (rule) => {
-        const now = new Date().toISOString()
-        const plusOneMinute = new Date(Date.now() + 60 * 1000).toISOString()
-        return rule.required().min(now).max(plusOneMinute)
-      },
+      name: 'link',
+      type: 'string',
+      description: descriptionText.link,
     }),
     defineField({
-      name: 'updatedAt',
-      type: 'datetime',
-      initialValue: () => new Date().toISOString(),
-      validation: (rule) => {
-        const now = new Date().toISOString()
-        const plusOneMinute = new Date(Date.now() + 60 * 1000).toISOString()
-        return rule.required().min(now).max(plusOneMinute)
-      },
+      name: 'linkLabel',
+      type: 'string',
+      description: descriptionText.linkLabel,
     }),
   ],
 })

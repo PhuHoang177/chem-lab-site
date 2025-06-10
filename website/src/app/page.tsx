@@ -1,20 +1,7 @@
 import Image from "next/image";
 import { client } from "@/sanity/client";
 import { PortableText } from "@portabletext/react";
-import type { TypedObject } from "@portabletext/types";
-
-type cardType = {
-  _id: string;
-  title: string;
-  description: string;
-  icon: {
-    asset?: {
-      url: string;
-    };
-  };
-  link?: string;
-  linkLabel?: string;
-};
+import { HeaderType, SINGLE_HEADER_QUERY } from "@/data";
 
 const CARDS_QUERY = `*[_type == "cardType"]|order(_createdAt asc){
   _id,
@@ -26,35 +13,6 @@ const CARDS_QUERY = `*[_type == "cardType"]|order(_createdAt asc){
   link,
   linkLabel
 }`;
-
-type headerType = {
-  title: string;
-  subtitle?: string;
-  image?: {
-    asset?: {
-      url: string;
-    };
-  };
-};
-
-const HEADER_QUERY = `*[_type == "headerType"][0]{
-  title,
-  subtitle,
-  image{
-    asset->{url}
-  }
-}`;
-
-type postType = {
-  _id: string;
-  title: string;
-  body: TypedObject[];
-  image?: {
-    asset?: {
-      url: string;
-    };
-  };
-};
 
 const POST_QUERY = `*[_type == "postType"] | order(publishedAt desc) {
   _id,
@@ -68,9 +26,11 @@ const POST_QUERY = `*[_type == "postType"] | order(publishedAt desc) {
 const options = { next: { revalidate: 30 } };
 
 export default async function HomePage() {
-  const cards: cardType[] = await client.fetch(CARDS_QUERY, {}, options);
-  const header: headerType = await client.fetch(HEADER_QUERY, {}, options);
+  const header: HeaderType = await client.fetch(SINGLE_HEADER_QUERY, {
+    slug: "home-header",
+  });
   const posts: postType[] = await client.fetch(POST_QUERY, {}, options);
+  const cards: cardType[] = await client.fetch(CARDS_QUERY, {}, options);
 
   return (
     <main className="w-full min-h-screen bg-white">

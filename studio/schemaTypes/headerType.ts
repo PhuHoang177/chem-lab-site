@@ -1,32 +1,15 @@
-import {defineField, defineType} from 'sanity'
-import {descriptionText} from './descriptionText'
+import {defineType} from 'sanity'
+import {pageField, titleField, contentField, updatedField, imageField} from './sharedFields'
 
 export const headerType = defineType({
   name: 'headerType',
   title: 'Header',
   type: 'document',
   fields: [
-    defineField({
-      name: 'page',
-      type: 'string',
-      description: descriptionText.page,
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'title',
-      title: 'Page Title',
-      type: 'string',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'subtitle',
-      title: 'Short Slogan',
-      type: 'string',
-    }),
-    defineField({
-      name: 'image',
-      title: 'Background Image',
-      type: 'image',
-    }),
+    pageField(),
+    titleField({title: 'Page Title'}),
+    contentField({title: 'Short Slogan', required: false}),
+    imageField({title: 'Background Image', required: false}),
+    updatedField(),
   ],
 })

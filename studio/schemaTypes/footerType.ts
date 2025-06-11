@@ -1,34 +1,15 @@
 import {defineField, defineType} from 'sanity'
 import {descriptionText} from './descriptionText'
+import {pageField, titleField, contentField} from './sharedFields'
 
 export const footerType = defineType({
   name: 'footerType',
   title: 'Footer',
   type: 'document',
   fields: [
-    defineField({
-      name: 'page',
-      type: 'string',
-      description: descriptionText.page,
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'title',
-      title: 'Lab Title',
-      type: 'string',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'info',
-      type: 'array',
-      of: [
-        {
-          type: 'block',
-          styles: [{title: 'Normal', value: 'normal'}],
-        },
-      ],
-      validation: (rule) => rule.required(),
-    }),
+    pageField(),
+    titleField({title: 'Lab Title'}),
+    contentField({title: 'Lab Info'}),
     defineField({
       name: 'socialsMedia',
       title: 'Social Media',
@@ -37,7 +18,6 @@ export const footerType = defineType({
         {
           type: 'object',
           fields: [
-            {name: 'label', type: 'string', validation: (rule) => rule.required()},
             {name: 'link', type: 'string', validation: (rule) => rule.required()},
             {name: 'icon', type: 'image', validation: (rule) => rule.required()},
           ],

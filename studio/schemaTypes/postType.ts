@@ -1,75 +1,25 @@
-import {defineField, defineType} from 'sanity'
-import {descriptionText} from './descriptionText'
+import {defineType} from 'sanity'
+import {
+  pageField,
+  orderField,
+  slugField,
+  titleField,
+  contentField,
+  imageField,
+  updatedField,
+} from './sharedFields'
 
 export const postType = defineType({
   name: 'postType',
   title: 'Post',
   type: 'document',
   fields: [
-    defineField({
-      name: 'page',
-      type: 'string',
-      description: descriptionText.page,
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'order',
-      type: 'number',
-      description: descriptionText.order,
-      validation: (rule) => rule.required().min(1).max(10000),
-    }),
-    defineField({
-      name: 'slug',
-      title: 'ID',
-      type: 'slug',
-      options: {
-        source: (doc: any) => `${doc.page || ''}-post-${doc.order || ''}`,
-        slugify: (input: string) =>
-          input
-            .toLowerCase()
-            .replace(/\s+/g, '-')
-            .replace(/[^a-z0-9-]/g, '')
-            .slice(0, 96),
-      },
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'title',
-      title: 'Post Title',
-      type: 'string',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'content',
-      title: 'Post Content',
-      type: 'array',
-      of: [{type: 'block'}],
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'image',
-      title: 'Post Image',
-      type: 'image',
-    }),
-    defineField({
-      name: 'publishedAt',
-      type: 'datetime',
-      initialValue: () => new Date().toISOString(),
-      validation: (rule) => {
-        const now = new Date().toISOString()
-        const plusOneMinute = new Date(Date.now() + 60 * 1000).toISOString()
-        return rule.required().min(now).max(plusOneMinute)
-      },
-    }),
-    defineField({
-      name: 'updatedAt',
-      type: 'datetime',
-      initialValue: () => new Date().toISOString(),
-      validation: (rule) => {
-        const now = new Date().toISOString()
-        const plusOneMinute = new Date(Date.now() + 60 * 1000).toISOString()
-        return rule.required().min(now).max(plusOneMinute)
-      },
-    }),
+    pageField(),
+    orderField(),
+    slugField(),
+    titleField({title: 'Post Title'}),
+    contentField({title: 'Post Content'}),
+    imageField({title: 'Post Image', required: false}),
+    updatedField(),
   ],
 })

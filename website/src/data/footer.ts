@@ -5,7 +5,6 @@ export type FooterType = {
   title: string;
   info: TypedObject[];
   socialsMedia: {
-    label: string;
     link: string;
     icon: { asset: { url: string } };
   }[];
@@ -14,13 +13,12 @@ export type FooterType = {
   partnerRelationship: string;
 };
 
-export const SINGLE_FOOTER_QUERY = `
+export const FOOTER_QUERY = `
 *[_type == "footerType" && page == $page][0]{
   page,
   title,
   info,
   socialsMedia[]{
-    label,
     link,
     icon{
       asset->{url}

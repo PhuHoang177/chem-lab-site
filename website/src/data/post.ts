@@ -14,7 +14,6 @@ export type PostType = {
     };
   };
   publishedAt: string;
-  updatedAt: string;
 };
 
 // Query to get all posts for a given page, ordered by "order"
@@ -29,6 +28,5 @@ export const MULTI_POSTS_QUERY = `
       asset->{url}
     },
     publishedAt,
-    updatedAt
   }
 `;

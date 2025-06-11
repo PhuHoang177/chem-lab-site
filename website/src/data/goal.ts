@@ -16,7 +16,7 @@ export type GoalType = {
 };
 
 // Query to get all goals for a given page, ordered by "order"
-export const GOALS_BY_PAGE_QUERY = `
+export const MULTI_GOALS_QUERY = `
   *[_type == "goalType" && page == $page] | order(order asc){
     page,
     order,

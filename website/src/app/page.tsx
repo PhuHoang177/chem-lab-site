@@ -1,36 +1,31 @@
 import Image from "next/image";
 import { client } from "@/sanity/client";
 import { PortableText } from "@portabletext/react";
-import { HeaderType, SINGLE_HEADER_QUERY } from "@/data";
-
-const CARDS_QUERY = `*[_type == "cardType"]|order(_createdAt asc){
-  _id,
-  title,
-  description,
-  icon{
-    asset->{url}
-  },
-  link,
-  linkLabel
-}`;
-
-const POST_QUERY = `*[_type == "postType"] | order(publishedAt desc) {
-  _id,
-  title,
-  body,
-  image{
-    asset->{url}
-  }
-}`;
+import {
+  HeaderType,
+  SINGLE_HEADER_QUERY,
+  PostType,
+  MULTI_POSTS_QUERY,
+  GoalType,
+  MULTI_GOALS_QUERY,
+} from "@/data";
 
 const options = { next: { revalidate: 30 } };
 
 export default async function HomePage() {
   const header: HeaderType = await client.fetch(SINGLE_HEADER_QUERY, {
-    slug: "home-header",
+    page: "home",
   });
-  const posts: postType[] = await client.fetch(POST_QUERY, {}, options);
-  const cards: cardType[] = await client.fetch(CARDS_QUERY, {}, options);
+  const posts: PostType[] = await client.fetch(
+    MULTI_POSTS_QUERY,
+    { page: "home" },
+    options
+  );
+  const cards: GoalType[] = await client.fetch(
+    MULTI_GOALS_QUERY,
+    { page: "home" },
+    options
+  );
 
   return (
     <main className="w-full min-h-screen bg-white">
@@ -63,11 +58,11 @@ export default async function HomePage() {
       <section className="max-w-8xl mx-auto px-4 py-12 text-center">
         <div className="space-y-12">
           {posts.map((post) => (
-            <div key={post._id} className="mb-8 flex flex-col items-center">
+            <div key={post.order} className="mb-8 flex flex-col items-center">
               <h1 className="text-2xl font-semibold text-green-800 mb-4">
                 {post.title}
               </h1>
-              {(post.image?.asset?.url || post.body) && (
+              {(post.image?.asset?.url || post.content) && (
                 <div className="w-full max-w-5xl mx-auto">
                   {post.image?.asset?.url && (
                     <Image
@@ -80,7 +75,7 @@ export default async function HomePage() {
                     />
                   )}
                   <div className="prose mt-6 mb-3 mx-auto text-lg max-w-none">
-                    <PortableText value={post.body} />
+                    <PortableText value={post.content} />
                   </div>
                 </div>
               )}
@@ -94,7 +89,7 @@ export default async function HomePage() {
         <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
           {cards.map((card) => (
             <div
-              key={card._id}
+              key={card.order}
               className="flex flex-col items-center text-center px-4"
             >
               {card.icon?.asset?.url && (

@@ -1,7 +1,7 @@
 export type HeaderType = {
   page: string;
   title: string;
-  subtitle?: string;
+  content?: string;
   image?: {
     asset?: {
       url?: string;
@@ -9,12 +9,11 @@ export type HeaderType = {
   };
 };
 
-// Query to get the header for a given page
-export const SINGLE_HEADER_QUERY = `
+export const HEADER_QUERY = `
   *[_type == "headerType" && page == $page][0]{
     page,
     title,
-    subtitle,
+    content,
     image{
       asset->{url}
     }

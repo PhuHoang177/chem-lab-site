@@ -58,36 +58,20 @@ export default async function Members() {
           </p>
         </div>
       </section>
-      <ul className="grid gap-12 md:grid-cols-4 py-8">
+      <ul className="flex flex-wrap justify-center gap-8 py-8">
+        {" "}
         {images.map((img: imageType) => (
-          <li key={img._id} className="flex flex-col items-center">
-            <div className="relative w-64 h-96 mx-auto group">
-              <div className="absolute inset-0 transform -skew-y-6 bg-white shadow-xl rounded-lg z-0" />
-              <div className="relative w-full h-full overflow-hidden rounded-lg shadow-lg transform skew-y-6">
-                <Image
-                  src={img.image.asset.url}
-                  alt={img.caption || img.title || "Gallery image"}
-                  fill
-                  className="object-cover"
-                  style={{}}
-                />
-                {/* Play button overlay example */}
-                <button
-                  className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                  aria-label="Play"
-                >
-                  <span className="bg-green-400 bg-opacity-80 rounded-full w-16 h-16 flex items-center justify-center">
-                    <svg
-                      width="36"
-                      height="36"
-                      fill="white"
-                      viewBox="0 0 24 24"
-                    >
-                      <polygon points="9.5,7.5 16.5,12 9.5,16.5" />
-                    </svg>
-                  </span>
-                </button>
-              </div>
+          <li
+            key={img._id}
+            className="flex flex-col items-center bg-white shadow-md transform -skew-x-6 overflow-hidden rounded-lg"
+          >
+            <div className="relative w-64 h-96 skew-x-6">
+              <Image
+                src={img.image.asset.url}
+                alt={img.caption || img.title || "Gallery image"}
+                fill
+                className="object-cover skew-x-[-6deg]"
+              />
             </div>
             <div className="pt-4 text-center">
               <h2 className="text-lg font-semibold">{img.title}</h2>

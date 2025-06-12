@@ -1,10 +1,9 @@
 import type { TypedObject } from "@portabletext/types";
 
 export type FooterType = {
-  page: string;
   title: string;
-  info: TypedObject[];
-  socialsMedia: {
+  content: TypedObject[];
+  socials: {
     link: string;
     icon: { asset: { url: string } };
   }[];
@@ -14,11 +13,10 @@ export type FooterType = {
 };
 
 export const FOOTER_QUERY = `
-*[_type == "footerType" && page == $page][0]{
-  page,
+*[_type == "footerType"][0]{
   title,
-  info,
-  socialsMedia[]{
+  content,
+  socials[]{
     link,
     icon{
       asset->{url}

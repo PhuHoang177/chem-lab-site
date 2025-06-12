@@ -1,5 +1,6 @@
 import {defineField} from 'sanity'
 import {descriptionText} from './descriptionText'
+//import ReloadableDatetime from '../components/ReloadableDatetime'
 
 export const pageField = (options: {title?: string; required?: boolean} = {}) =>
   defineField({
@@ -25,8 +26,7 @@ export const orderField = (options: {title?: string; required?: boolean} = {}) =
     title: options.title ?? 'Order',
     type: 'number',
     description: descriptionText.order,
-    validation:
-      options.required === false ? undefined : (rule) => rule.required().min(1).max(10000),
+    validation: options.required === false ? undefined : (rule) => rule.required().min(1).max(1000),
   })
 
 export const slugField = (options: {title?: string; required?: boolean} = {}) =>
@@ -34,6 +34,7 @@ export const slugField = (options: {title?: string; required?: boolean} = {}) =>
     name: 'slug',
     title: options.title ?? 'ID',
     type: 'slug',
+    description: descriptionText.slug,
     options: {
       source: (doc: any) => `${doc.page || ''}-post-${doc.order || ''}`,
       slugify: (input: string) =>
@@ -69,7 +70,7 @@ export const titleField = (options: {title?: string; required?: boolean} = {}) =
 
 export const contentField = (options: {title?: string; required?: boolean} = {}) =>
   defineField({
-    name: 'block',
+    name: 'content',
     title: options.title ?? 'Content',
     type: 'array',
     of: [{type: 'block', styles: [{title: 'Normal', value: 'normal'}]}],
@@ -81,14 +82,35 @@ export const imageField = (options: {title?: string; required?: boolean} = {}) =
     name: 'image',
     title: options.title ?? 'Image',
     type: 'image',
-    validation: options.required ? (rule) => rule.required() : undefined,
+    validation: options.required === false ? undefined : (rule) => rule.required(),
   })
 
-export const updatedField = (options: {title?: string} = {}) =>
+export const linkField = (options: {title?: string; required?: boolean} = {}) =>
+  defineField({
+    name: 'link',
+    title: options.title ?? 'Link',
+    type: 'string',
+    description: descriptionText.link,
+    initialValue: '#',
+    validation: options.required === false ? undefined : (rule) => rule.required(),
+  })
+
+export const linkLabelField = (options: {title?: string; required?: boolean} = {}) =>
+  defineField({
+    name: 'linkLabel',
+    title: options.title ?? 'Link Label',
+    type: 'string',
+    description: descriptionText.linkLabel,
+    initialValue: 'Learn More',
+    validation: options.required === false ? undefined : (rule) => rule.required(),
+  })
+
+export const updatedField = (options: {title?: string; required?: boolean} = {}) =>
   defineField({
     name: 'updatedAt',
     title: options.title ?? 'Last Updated',
     type: 'datetime',
     description: descriptionText.update,
-    readOnly: true,
+    initialValue: () => new Date().toISOString(),
+    validation: options.required === false ? undefined : (rule) => rule.required(),
   })

@@ -1,5 +1,5 @@
 import {defineType} from 'sanity'
-import {pageField, titleField, contentField, updatedField, imageField} from './sharedFields'
+import {pageField, titleField, contentField, imageField} from './sharedFields'
 
 export const headerType = defineType({
   name: 'headerType',
@@ -10,6 +10,5 @@ export const headerType = defineType({
     titleField({title: 'Page Title'}),
     contentField({title: 'Short Slogan', required: false}),
     imageField({title: 'Background Image', required: false}),
-    updatedField(),
   ],
 })

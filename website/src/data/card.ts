@@ -1,12 +1,12 @@
-export type GoalType = {
+export type CardType = {
   page: string;
   order: number;
   slug: {
     current: string;
   };
   title: string;
-  description: string;
-  icon: {
+  content: string;
+  image?: {
     asset?: {
       url?: string;
     };
@@ -15,18 +15,17 @@ export type GoalType = {
   linkLabel?: string;
 };
 
-// Query to get all goals for a given page, ordered by "order"
-export const MULTI_GOALS_QUERY = `
-  *[_type == "goalType" && page == $page] | order(order asc){
+export const CARD_QUERY = `
+  *[_type == "cardType" && page == $page] | order(order asc){
     page,
     order,
     slug,
     title,
-    description,
-    icon{
+    content,
+    image{
       asset->{url}
     },
     link,
-    linkLabel
+    linkLabel,
   }
 `;

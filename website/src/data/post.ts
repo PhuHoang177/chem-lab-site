@@ -13,11 +13,11 @@ export type PostType = {
       url?: string;
     };
   };
-  publishedAt: string;
+  updatedAt: string;
 };
 
 // Query to get all posts for a given page, ordered by "order"
-export const MULTI_POSTS_QUERY = `
+export const POSTS_QUERY = `
   *[_type == "postType" && page == $page] | order(order asc){
     page,
     order,
@@ -27,6 +27,6 @@ export const MULTI_POSTS_QUERY = `
     image{
       asset->{url}
     },
-    publishedAt,
+    updatedAt,
   }
 `;

@@ -3,26 +3,26 @@ import { client } from "@/sanity/client";
 import { PortableText } from "@portabletext/react";
 import {
   HeaderType,
-  SINGLE_HEADER_QUERY,
+  HEADER_QUERY,
   PostType,
-  MULTI_POSTS_QUERY,
-  GoalType,
-  MULTI_GOALS_QUERY,
+  POSTS_QUERY,
+  CardType,
+  CARD_QUERY,
 } from "@/data";
 
 const options = { next: { revalidate: 30 } };
 
 export default async function HomePage() {
-  const header: HeaderType = await client.fetch(SINGLE_HEADER_QUERY, {
+  const header: HeaderType = await client.fetch(HEADER_QUERY, {
     page: "home",
   });
   const posts: PostType[] = await client.fetch(
-    MULTI_POSTS_QUERY,
+    POSTS_QUERY,
     { page: "home" },
     options
   );
-  const cards: GoalType[] = await client.fetch(
-    MULTI_GOALS_QUERY,
+  const cards: CardType[] = await client.fetch(
+    CARD_QUERY,
     { page: "home" },
     options
   );
@@ -48,9 +48,11 @@ export default async function HomePage() {
           <h1 className="text-4xl md:text-6xl font-extrabold text-white text-center drop-shadow-lg">
             {header.title}
           </h1>
-          <p className="mt-4 text-lg md:text-2xl text-white text-center font-medium drop-shadow">
-            {header.subtitle}
-          </p>
+          {Array.isArray(header?.content) && (
+            <div className="mt-4 text-lg md:text-2xl text-white text-center font-medium drop-shadow prose prose-invert max-w-2xl">
+              <PortableText value={header.content} />
+            </div>
+          )}
         </div>
       </section>
 
@@ -84,7 +86,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Info Cards Section */}
+      {/* Cards Section */}
       <section className="w-full border-t border-gray-200 bg-white py-12">
         <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
           {cards.map((card) => (
@@ -92,9 +94,9 @@ export default async function HomePage() {
               key={card.order}
               className="flex flex-col items-center text-center px-4"
             >
-              {card.icon?.asset?.url && (
+              {card.image?.asset?.url && (
                 <Image
-                  src={card.icon.asset.url || "/placeholder.png"}
+                  src={card.image.asset.url || "/placeholder.png"}
                   alt={card.title || "Card icon"}
                   width={100}
                   height={100}
@@ -106,9 +108,14 @@ export default async function HomePage() {
               <h3 className="mt-2 text-2xl font-bold text-gray-800">
                 {card.title}
               </h3>
-              <p className="mt-4 text-gray-700">{card.description}</p>
+
+              {Array.isArray(card?.content) && (
+                <div className="mt-4 text-gray-700">
+                  <PortableText value={card.content} />
+                </div>
+              )}
               <a
-                href={card.link || "#"}
+                href={card.link}
                 className="mt-4 text-blue-700 font-medium flex items-center justify-center gap-1 hover:text-blue-900"
               >
                 <span className="underline">

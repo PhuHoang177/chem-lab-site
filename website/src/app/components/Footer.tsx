@@ -3,6 +3,7 @@ import Image from "next/image";
 import { client } from "@/sanity/client";
 import { PortableText } from "@portabletext/react";
 import Button from "@mui/material/Button";
+import { FooterType, FOOTER_QUERY } from "@/data";
 
 export default async function Footer() {
   const footer: FooterType = await client.fetch(FOOTER_QUERY);
@@ -15,24 +16,24 @@ export default async function Footer() {
           <div className="font-bold text-black text-lg mb-2">
             {footer?.title}
           </div>
-          {footer?.info && (
+          {Array.isArray(footer?.content) && (
             <div className="prose prose-invert text-xs text-white space-y-0 leading-none">
-              <PortableText value={footer.info} />
+              <PortableText value={footer.content} />
             </div>
           )}
         </div>
         {/* Center: Social icons */}
         <div className="flex justify-center w-full">
           <ul className="flex space-x-4">
-            {footer?.socials?.map((icon) =>
-              icon.icon?.asset?.url ? (
-                <li key={icon.label}>
+            {footer?.socials?.map((icon, index) =>
+              icon.icon?.asset?.url && typeof icon.link === "string" ? (
+                <li key={icon.link || index}>
                   <Button
                     component="a"
                     href={icon.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={icon.label}
+                    aria-label={icon.link}
                     sx={{
                       p: 0,
                       minWidth: 0,
@@ -53,7 +54,7 @@ export default async function Footer() {
                   >
                     <Image
                       src={icon.icon.asset.url}
-                      alt={icon.label}
+                      alt={icon.link}
                       width={40}
                       height={40}
                       className="object-contain"
@@ -65,16 +66,16 @@ export default async function Footer() {
             )}
           </ul>
         </div>
-        {/* Right: University Logo */}
+        {/* Right: Partner Logo */}
         <div className="flex flex-col items-end justify-center w-full space-y-1 pr-4">
-          {footer.universityLogo?.asset?.url && (
+          {footer.partner?.asset?.url && (
             <div>
               <span className="text-xs text-white mb-px">
-                {footer?.universityDescription || "Associated with"}
+                {footer?.partnerRelationship}
               </span>
               <Button
                 component="a"
-                href={footer.universityLogoLink || "#"}
+                href={footer.partnerLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 sx={{
@@ -97,7 +98,7 @@ export default async function Footer() {
                 }}
               >
                 <Image
-                  src={footer.universityLogo.asset.url}
+                  src={footer.partner.asset.url}
                   alt="University Logo"
                   width={150}
                   height={75}

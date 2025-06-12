@@ -1,4 +1,4 @@
 export * from "./header";
-export * from "./goal";
+export * from "./card";
 export * from "./footer";
 export * from "./post";

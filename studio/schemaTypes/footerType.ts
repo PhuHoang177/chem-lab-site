@@ -1,17 +1,16 @@
 import {defineField, defineType} from 'sanity'
 import {descriptionText} from './descriptionText'
-import {pageField, titleField, contentField} from './sharedFields'
+import {titleField, contentField} from './sharedFields'
 
 export const footerType = defineType({
   name: 'footerType',
   title: 'Footer',
   type: 'document',
   fields: [
-    pageField(),
     titleField({title: 'Lab Title'}),
     contentField({title: 'Lab Info'}),
     defineField({
-      name: 'socialsMedia',
+      name: 'socials',
       title: 'Social Media',
       type: 'array',
       of: [
@@ -40,6 +39,7 @@ export const footerType = defineType({
       name: 'partnerRelationship',
       type: 'string',
       description: descriptionText.partnerRelationship,
+      initialValue: 'Associated with',
       validation: (rule) => rule.required(),
     }),
   ],

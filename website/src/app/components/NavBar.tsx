@@ -52,7 +52,7 @@ export default function NavBar() {
     { label: "Research", href: "/" },
     { label: "Members", href: "/members" },
     { label: "Publications", href: "/" },
-    { label: "News", href: "/" },
+    { label: "News", href: "/news" },
     { label: "Contact", href: "/" },
   ];
 

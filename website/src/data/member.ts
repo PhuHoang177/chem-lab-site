@@ -1,8 +1,13 @@
 import { TypedObject } from "@portabletext/types";
 
-export type HeaderType = {
+export type MemberType = {
   page: string;
+  order: number;
+  slug: {
+    current: string;
+  };
   title: string;
+  role: string;
   content: TypedObject[];
   image?: {
     asset?: {
@@ -11,13 +16,16 @@ export type HeaderType = {
   };
 };
 
-export const HEADER_QUERY = `
-  *[_type == "headerType" && page == $page][0]{
+export const MEMBER_QUERY = `
+  *[_type == "memberType" && page == $page] | order(order asc){
     page,
+    order,
+    slug,
     title,
+    role,
     content,
     image{
       asset->{url}
-    }
+    },
   }
 `;

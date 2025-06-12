@@ -32,7 +32,7 @@ export default async function HomePage() {
       {/* Header Section */}
       <section className="relative w-full h-[420px] md:h-[520px] flex items-center justify-center">
         {header?.image?.asset?.url && (
-          <>
+          <div>
             <Image
               src={header.image.asset.url}
               alt={header.title}
@@ -42,7 +42,7 @@ export default async function HomePage() {
               priority
             />
             <div className="absolute inset-0 bg-black/60" />
-          </>
+          </div>
         )}
         <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
           <h1 className="text-4xl md:text-6xl font-extrabold text-white text-center drop-shadow-lg">

@@ -1,3 +1,5 @@
+import { TypedObject } from "@portabletext/types";
+
 export type CardType = {
   page: string;
   order: number;
@@ -5,7 +7,7 @@ export type CardType = {
     current: string;
   };
   title: string;
-  content: string;
+  content: TypedObject[];
   image?: {
     asset?: {
       url?: string;

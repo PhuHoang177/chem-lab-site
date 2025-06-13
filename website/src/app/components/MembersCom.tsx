@@ -10,7 +10,7 @@ interface Props {
   members: MemberType[];
 }
 
-export default function MembersClient({ members }: Props) {
+export default function MembersCom({ members }: Props) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const isPanelOpen = openIndex !== null;
 
@@ -31,7 +31,7 @@ export default function MembersClient({ members }: Props) {
     >
       {members.map((member, index) => (
         <Box
-          key={member.slug.current}
+          key={member.order}
           sx={{
             width: 260,
             position: "relative",
@@ -80,9 +80,6 @@ export default function MembersClient({ members }: Props) {
               }}
             >
               <Typography variant="h6">{member.title}</Typography>
-              <Typography variant="body2" color="text.secondary">
-                {member.role}
-              </Typography>
             </Box>
           </Box>
 
@@ -114,7 +111,7 @@ export default function MembersClient({ members }: Props) {
               <Typography variant="subtitle1" sx={{ mb: 1 }}>
                 About {member.title}
               </Typography>
-              <PortableText value={member.content} />
+              <PortableText value={member.content || []} />{" "}
             </Box>
           )}
         </Box>

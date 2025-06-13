@@ -1,21 +1,19 @@
 import { client } from "@/sanity/client";
 import Image from "next/image";
 import { PortableText } from "@portabletext/react";
-import { HeaderType, HEADER_QUERY, MemberType, MEMBER_QUERY } from "@/data";
+import { HeaderType, HEADER_QUERY, MembersType, MEMBERS_QUERY } from "@/data";
 
-const options = { next: { revalidate: 30 } };
+// const options = { next: { revalidate: 30 } };
 
 export default async function MembersPage() {
   const header: HeaderType = await client.fetch(HEADER_QUERY, {
     page: "members",
   });
-  const members: MemberType[] = await client.fetch(
-    MEMBER_QUERY,
-    { page: "members" },
-    options
-  );
+  const members: MembersType[] = await client.fetch(MEMBERS_QUERY);
 
-  const MembersClient = (await import("@/app/components/Members")).default;
+  console.log("members:", members);
+
+  const MembersCom = (await import("@/app/components/MembersCom")).default;
 
   return (
     <main className="w-full min-h-screen bg-white">
@@ -46,7 +44,11 @@ export default async function MembersPage() {
         </div>
       </section>
       {/* Members Section */}
-      <MembersClient members={members} />;
+      {members[0].membersList && members[0].membersList.length > 0 && (
+        <>
+          <MembersCom members={members[0].membersList} />
+        </>
+      )}
     </main>
   );
 }
